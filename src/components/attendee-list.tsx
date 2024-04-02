@@ -15,7 +15,7 @@ export function AttendeeList() {
           <Search className="size-4 text-emerald-300" />
           <input
             placeholder="Buscar Participante"
-            className="bg-transparent flex-1 outline-none border-none p-0"
+            className="bg-transparent flex-1  border-none p-0 "
           />
         </div>
       </div>
@@ -71,7 +71,7 @@ export function AttendeeList() {
                     3 dias atrás
                   </td>
                   <td className="py-3 px-4 text-sm text-zinc-300">
-                    <button className="bg-black/20 border border-white/10 rounded-md p-1.5">
+                    <button className="bg-black/20 border border-white/10 rounded-md p-1.5 hover:opacity-70">
                       <MoreHorizontal className="size-4" />
                     </button>
                   </td>
@@ -94,16 +94,16 @@ export function AttendeeList() {
                     <span>Página 1 de 23</span>
                
                 <div className=" flex flex gap-1.5 ">
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5">
+                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
                     <ChevronsLeft className="size-4" />
                   </button>
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5">
+                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
                     <ChevronLeft className="size-4" />
                   </button>
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5">
+                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
                     <ChevronRight className="size-4" />
                   </button>
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5">
+                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
                     <ChevronsRight className="size-4" />
                   </button>
                   </div>
