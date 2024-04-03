@@ -6,6 +6,7 @@ import {
   ChevronRight,
   ChevronsRight,
 } from "lucide-react";
+import { IconButton } from "./icon-button";
 export function AttendeeList() {
   return (
     <div className="flex flex-col gap-4">
@@ -28,7 +29,7 @@ export function AttendeeList() {
                 style={{ width: 48 }}
                 className="py-3 px-4 text-sm font-semibold text-left"
               >
-                <input type="checkbox" className="size-4 bg-black/20 border-"/>
+                <input type="checkbox" className="size-4 bg-black/20 border-" />
               </th>
               <th className="py-3 px-4 text-sm font-semibold text-left">
                 Código
@@ -51,9 +52,15 @@ export function AttendeeList() {
           <tbody>
             {Array.from({ length: 8 }).map((_, i) => {
               return (
-                <tr key={i} className="border-b border-white/10 hover:bg-white/5 ">
+                <tr
+                  key={i}
+                  className="border-b border-white/10 hover:bg-white/5 "
+                >
                   <td className="py-3 px-4 text-sm text-zinc-300">
-                    <input type="checkbox" className="size-4 bg-black/20 border-"/>
+                    <input
+                      type="checkbox"
+                      className="size-4 bg-black/20 border-"
+                    />
                   </td>
                   <td className="py-3 px-4 text-sm text-zinc-300">123467</td>
                   <td className="py-3 px-4 text-sm text-zinc-300">
@@ -71,9 +78,9 @@ export function AttendeeList() {
                     3 dias atrás
                   </td>
                   <td className="py-3 px-4 text-sm text-zinc-300">
-                    <button className="bg-black/20 border border-white/10 rounded-md p-1.5 hover:opacity-70">
+                    <IconButton transparent>
                       <MoreHorizontal className="size-4" />
-                    </button>
+                    </IconButton>
                   </td>
                 </tr>
               );
@@ -89,23 +96,24 @@ export function AttendeeList() {
               </td>
               <td
                 colSpan={3}
-                className="py-3 px-4 text-sm text-zinc-300 text-right">
+                className="py-3 px-4 text-sm text-zinc-300 text-right"
+              >
                 <div className=" inline-flex items-center gap-8">
-                    <span>Página 1 de 23</span>
-               
-                <div className=" flex flex gap-1.5 ">
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
-                    <ChevronsLeft className="size-4" />
-                  </button>
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
-                    <ChevronLeft className="size-4" />
-                  </button>
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
-                    <ChevronRight className="size-4" />
-                  </button>
-                  <button className="bg-zinc-850 border border-white/10 rounded-md p-1.5 hover:opacity-70">
-                    <ChevronsRight className="size-4" />
-                  </button>
+                  <span>Página 1 de 23</span>
+
+                  <div className=" flex flex gap-1.5 ">
+                    <IconButton>
+                      <ChevronsLeft className="size-4" />
+                    </IconButton>
+                    <IconButton>
+                      <ChevronLeft className="size-4" />
+                    </IconButton>
+                    <IconButton>
+                      <ChevronRight className="size-4" />
+                    </IconButton>
+                    <IconButton>
+                      <ChevronsRight className="size-4" />
+                    </IconButton>
                   </div>
                 </div>
               </td>
