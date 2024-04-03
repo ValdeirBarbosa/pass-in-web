@@ -9,6 +9,7 @@ import {
 import { IconButton } from "./icon-button";
 import { Table } from "./table/table";
 import { TableHeader } from "./table/table-header";
+import { TableCell } from "./table/table-cell";
 export function AttendeeList() {
   return (
     <div className="flex flex-col gap-4">
@@ -46,45 +47,45 @@ export function AttendeeList() {
                 key={i}
                 className="border-b border-white/10 hover:bg-white/5 "
               >
-                <td className="py-3 px-4 text-sm text-zinc-300">
+                <TableCell className="py-3 px-4 text-sm text-zinc-300">
                   <input
                     type="checkbox"
                     className="size-4 bg-black/20 border-"
                   />
-                </td>
-                <td className="py-3 px-4 text-sm text-zinc-300">123467</td>
-                <td className="py-3 px-4 text-sm text-zinc-300">
+                </TableCell>
+                <TableCell >123467</TableCell>
+                <TableCell >
                   <div className="flex flex-col gap-1">
                     <span className="font-semibold text-white ">
                       Valdeir Alves Barbosa
                     </span>
                     <span>valdeir.a.barbosa@gmail.com</span>
                   </div>
-                </td>
-                <td className="py-3 px-4 text-sm text-zinc-300">
+                </TableCell>
+                <TableCell >
                   7 dias atrás{" "}
-                </td>
-                <td className="py-3 px-4 text-sm text-zinc-300">
+                </TableCell>
+                <TableCell >
                   3 dias atrás
-                </td>
-                <td className="py-3 px-4 text-sm text-zinc-300">
+                </TableCell>
+                <TableCell >
                   <IconButton transparent>
                     <MoreHorizontal className="size-4" />
                   </IconButton>
-                </td>
+                </TableCell>
               </tr>
             );
           })}
         </tbody>
         <tfoot className="bg-zinc-900">
           <tr>
-            <td
+            <TableCell
               colSpan={3}
               className="py-3 px-4 text-sm text-zinc-300 text-left"
             >
               Mostrando 10 de 228 itens
-            </td>
-            <td
+            </TableCell>
+            <TableCell
               colSpan={3}
               className="py-3 px-4 text-sm text-zinc-300 text-right"
             >
@@ -106,7 +107,7 @@ export function AttendeeList() {
                   </IconButton>
                 </div>
               </div>
-            </td>
+            </TableCell>
           </tr>
         </tfoot>
       </Table>
