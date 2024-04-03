@@ -10,6 +10,7 @@ import { IconButton } from "./icon-button";
 import { Table } from "./table/table";
 import { TableHeader } from "./table/table-header";
 import { TableCell } from "./table/table-cell";
+import { TableRow } from "./table/Table-row";
 export function AttendeeList() {
   return (
     <div className="flex flex-col gap-4">
@@ -43,9 +44,8 @@ export function AttendeeList() {
         <tbody>
           {Array.from({ length: 8 }).map((_, i) => {
             return (
-              <tr
+              <TableRow
                 key={i}
-                className="border-b border-white/10 hover:bg-white/5 "
               >
                 <TableCell className="py-3 px-4 text-sm text-zinc-300">
                   <input
@@ -73,7 +73,7 @@ export function AttendeeList() {
                     <MoreHorizontal className="size-4" />
                   </IconButton>
                 </TableCell>
-              </tr>
+              </TableRow>
             );
           })}
         </tbody>
@@ -87,7 +87,7 @@ export function AttendeeList() {
             </TableCell>
             <TableCell
               colSpan={3}
-              className="py-3 px-4 text-sm text-zinc-300 text-right"
+              className="py-3 px-4 text-sm text-zinc-500 text-right"
             >
               <div className=" inline-flex items-center gap-8">
                 <span>Página 1 de 23</span>
