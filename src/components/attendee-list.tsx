@@ -1,11 +1,11 @@
+import { ChangeEvent, useEffect, useState } from "react";
 import { Search, MoreHorizontal, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
 import { IconButton } from "./icon-button";
 import { Table } from "./table/table";
 import { TableHeader } from "./table/table-header";
 import { TableCell } from "./table/table-cell";
 import { TableRow } from "./table/Table-row";
-import { ChangeEvent, useState } from "react";
-import { attendees } from "./data/attendees";
+
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -18,7 +18,21 @@ export function AttendeeList() {
 
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [attendees, setAttendees] = useState([])
+
+
+
   const totalPages = Math.ceil(attendees.length / 10)
+
+useEffect(()=>{
+  fetch('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
+  .then(response => response.json())
+  .then(data =>{console.log(data)
+    setAttendees(data.attendees)
+  })
+  
+},[page])
+
   function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
     setSearch(event.target.value);
 
@@ -43,6 +57,15 @@ export function AttendeeList() {
     setPage(page - 1)
 
   }
+
+
+
+
+
+
+
+
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex  gap-3 items-center">
@@ -75,8 +98,9 @@ export function AttendeeList() {
         <tbody>
           {attendees.slice((page - 1) * 10, page * 10).map((attendee) => {
             return (
+              
               <TableRow
-                key={attendee.id}
+                key={attendee}
               >
                 <TableCell className="py-3 px-4 text-sm text-zinc-300">
                   <input
@@ -90,11 +114,11 @@ export function AttendeeList() {
                     <span className="font-semibold text-white ">
                       {attendee.name}
                     </span>
-                    <span>{attendee.mail}</span>
+                    <span>{attendee.email.toString()}</span>
                   </div>
                 </TableCell>
                 <TableCell >
-                  {dayjs().to(attendee.createdAt)}
+                  {dayjs().to(attendees.createdAt)}
                 </TableCell>
                 <TableCell >
                   {dayjs().to(attendee.checkedInAt)}
