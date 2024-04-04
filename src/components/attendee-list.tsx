@@ -9,16 +9,38 @@ import { attendees } from "./data/attendees";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/pt-br"
 
 dayjs.extend(relativeTime)
+dayjs.locale('pt-br')
 
 export function AttendeeList() {
 
   const [search, setSearch] = useState('')
-
+  const [page, setPage] = useState(1)
+  const totalPages = Math.ceil(attendees.length / 10)
   function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
     setSearch(event.target.value);
 
+
+  }
+  function goToFisrtPage() {
+    setPage(1)
+
+  }
+  function goToLastPage() {
+    setPage(totalPages)
+
+  }
+  function goToNextPage() {
+
+
+    setPage(page + 1)
+
+  }
+  function goToPreviustPage() {
+
+    setPage(page - 1)
 
   }
   return (
@@ -51,7 +73,7 @@ export function AttendeeList() {
           </tr>
         </thead>
         <tbody>
-          {attendees.map((attendee) => {
+          {attendees.slice((page - 1) * 10, page * 10).map((attendee) => {
             return (
               <TableRow
                 key={attendee.id}
@@ -72,10 +94,10 @@ export function AttendeeList() {
                   </div>
                 </TableCell>
                 <TableCell >
-                  {dayjs(attendee.createdAt).toNow()}
+                  {dayjs().to(attendee.createdAt)}
                 </TableCell>
                 <TableCell >
-                {dayjs(attendee.checkedInAt).toNow()}
+                  {dayjs().to(attendee.checkedInAt)}
                 </TableCell>
                 <TableCell >
                   <IconButton transparent>
@@ -92,26 +114,26 @@ export function AttendeeList() {
               colSpan={3}
               className="py-3 px-4 text-sm text-zinc-300 text-left"
             >
-              Mostrando 10 de 228 itens
+              Mostrando 10 de {attendees.length} itens
             </TableCell>
             <TableCell
               colSpan={3}
               className="py-3 px-4 text-sm text-zinc-500 text-right"
             >
               <div className=" inline-flex items-center gap-8">
-                <span>Página 1 de 23</span>
+                <span>Página {page} de {totalPages}</span>
 
                 <div className=" flex flex gap-1.5 ">
-                  <IconButton>
+                  <IconButton onClick={goToFisrtPage} disabled={page ==1 }>
                     <ChevronsLeft className="size-4" />
                   </IconButton>
-                  <IconButton>
+                  <IconButton onClick={goToPreviustPage} disabled={page ==1 }>
                     <ChevronLeft className="size-4" />
                   </IconButton>
-                  <IconButton>
+                  <IconButton onClick={goToNextPage} disabled={totalPages ==page }>
                     <ChevronRight className="size-4" />
                   </IconButton>
-                  <IconButton>
+                  <IconButton onClick={goToLastPage} disabled={totalPages ==page }>
                     <ChevronsRight className="size-4" />
                   </IconButton>
                 </div>
