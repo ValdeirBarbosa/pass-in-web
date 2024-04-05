@@ -14,27 +14,45 @@ import "dayjs/locale/pt-br"
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
+
+interface Attendee {
+  id: string
+  name: string
+  email: string
+  createdAt: string
+  checkedInAt: string | null
+}
 export function AttendeeList() {
 
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [attendees, setAttendees] = useState([])
+  const [total, setTotal] = useState(0)
+  const [attendees, setAttendees] = useState<Attendee[]>([])
 
 
 
-  const totalPages = Math.ceil(attendees.length / 10)
+  const totalPages = Math.ceil(total / 10)
 
-useEffect(()=>{
-  fetch('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
-  .then(response => response.json())
-  .then(data =>{console.log(data)
-    setAttendees(data.attendees)
-  })
-  
-},[page])
+  useEffect(() => {
+    const url = new URL('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
+    url.searchParams.set('pageIndex', String(page - 1))
+    if (search.length > 0) {
+      url.searchParams.set('query', search)
+    }
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setAttendees(data.attendees)
+        setTotal(data.total)
+      })
+
+  }, [page, search])
 
   function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
     setSearch(event.target.value);
+    setPage(1)
 
 
   }
@@ -60,12 +78,6 @@ useEffect(()=>{
 
 
 
-
-
-
-
-
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex  gap-3 items-center">
@@ -73,10 +85,10 @@ useEffect(()=>{
         <div className="px-3 w-72 py-1.5 border border-white/10  rounded-lg text-sm flex items-center gap-3">
           <Search className="size-4 text-emerald-300" />
 
-          <input onChange={onSearchInputChanged} placeholder="Buscar Participante" className="bg-transparent flex-1  border-none p-0 " />
+          <input onChange={onSearchInputChanged} placeholder="Buscar Participante" className="focus:ring-0 bg-transparent flex-1  border-none p-0 " />
 
         </div>
-        {search}
+       
       </div>
 
       <Table>
@@ -96,11 +108,11 @@ useEffect(()=>{
           </tr>
         </thead>
         <tbody>
-          {attendees.slice((page - 1) * 10, page * 10).map((attendee) => {
+          {attendees.map((attendee) => {
             return (
-              
+
               <TableRow
-                key={attendee}
+                key={attendee.id}
               >
                 <TableCell className="py-3 px-4 text-sm text-zinc-300">
                   <input
@@ -114,14 +126,16 @@ useEffect(()=>{
                     <span className="font-semibold text-white ">
                       {attendee.name}
                     </span>
-                    <span>{attendee.email.toString()}</span>
+                    <span>{attendee.email.toLowerCase()}</span>
                   </div>
                 </TableCell>
                 <TableCell >
-                  {dayjs().to(attendees.createdAt)}
+                  {dayjs().to(attendee.createdAt)}
                 </TableCell>
                 <TableCell >
-                  {dayjs().to(attendee.checkedInAt)}
+                  {attendee.checkedInAt === null
+                    ? <span className="text-gray-600">Sem check-in</span>
+                    : dayjs().to(attendee.checkedInAt)}
                 </TableCell>
                 <TableCell >
                   <IconButton transparent>
@@ -130,7 +144,8 @@ useEffect(()=>{
                 </TableCell>
               </TableRow>
             );
-          })}
+          })
+          }
         </tbody>
         <tfoot className="bg-zinc-900">
           <tr>
@@ -138,7 +153,7 @@ useEffect(()=>{
               colSpan={3}
               className="py-3 px-4 text-sm text-zinc-300 text-left"
             >
-              Mostrando 10 de {attendees.length} itens
+              Mostrando {attendees.length} de {total} itens
             </TableCell>
             <TableCell
               colSpan={3}
@@ -148,16 +163,16 @@ useEffect(()=>{
                 <span>Página {page} de {totalPages}</span>
 
                 <div className=" flex flex gap-1.5 ">
-                  <IconButton onClick={goToFisrtPage} disabled={page ==1 }>
+                  <IconButton onClick={goToFisrtPage} disabled={page == 1}>
                     <ChevronsLeft className="size-4" />
                   </IconButton>
-                  <IconButton onClick={goToPreviustPage} disabled={page ==1 }>
+                  <IconButton onClick={goToPreviustPage} disabled={page == 1}>
                     <ChevronLeft className="size-4" />
                   </IconButton>
-                  <IconButton onClick={goToNextPage} disabled={totalPages ==page }>
+                  <IconButton onClick={goToNextPage} disabled={totalPages == page}>
                     <ChevronRight className="size-4" />
                   </IconButton>
-                  <IconButton onClick={goToLastPage} disabled={totalPages ==page }>
+                  <IconButton onClick={goToLastPage} disabled={totalPages == page}>
                     <ChevronsRight className="size-4" />
                   </IconButton>
                 </div>
