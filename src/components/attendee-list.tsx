@@ -25,15 +25,15 @@ interface Attendee {
 export function AttendeeList() {
 
   const [search, setSearch] = useState('')
-  const [page, setPage] = useState(1)
+  // const [page, setPage] = useState(1)
+  const page =1
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<Attendee[]>([])
-
-
 
   const totalPages = Math.ceil(total / 10)
 
   useEffect(() => {
+
     const url = new URL('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
     url.searchParams.set('pageIndex', String(page - 1))
     if (search.length > 0) {
@@ -57,22 +57,25 @@ export function AttendeeList() {
 
   }
   function goToFisrtPage() {
-    setPage(1)
+    // setPage(1)
 
   }
   function goToLastPage() {
-    setPage(totalPages)
+    // setPage(totalPages)
 
   }
   function goToNextPage() {
 
 
-    setPage(page + 1)
+    // setPage(page + 1)
+    const url = new URL(window.location.toString())
+    url.searchParams.set('page',String(page+1))
+    window.history.pushState({},"",url)
 
   }
   function goToPreviustPage() {
 
-    setPage(page - 1)
+    // setPage(page - 1)
 
   }
 
