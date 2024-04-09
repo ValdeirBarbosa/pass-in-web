@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Search, MoreHorizontal, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
+import { Search, MoreHorizontal, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, WaypointsIcon } from "lucide-react";
 import { IconButton } from "./icon-button";
 import { Table } from "./table/table";
 import { TableHeader } from "./table/table-header";
@@ -24,9 +24,25 @@ interface Attendee {
 }
 export function AttendeeList() {
 
-  const [search, setSearch] = useState('')
-  // const [page, setPage] = useState(1)
-  const page =1
+  const [search, setSearch] = useState(()=>{
+      const url = new URL(window.location.toString())
+      if(url.searchParams.has('search')){
+        return url.searchParams.get('search')?? ''
+      }
+  
+      return ''
+     }
+
+  )
+   const [page, setPage] = useState(()=>{
+    const url = new URL(window.location.toString())
+    if(url.searchParams.has('page')){
+      return Number (url.searchParams.get('page'))
+    }
+
+    return 1
+   })
+
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<Attendee[]>([])
 
@@ -50,35 +66,50 @@ export function AttendeeList() {
 
   }, [page, search])
 
+  function setCurrentSearch(search:string){
+
+    const url = new URL(window.location.toString())
+
+    url.searchParams.set('search',search)
+
+    window.history.pushState({},"",url)
+    setSearch(search)
+
+  }
+
+  function setCurrentPage(page:number){
+    const url = new URL(window.location.toString())
+
+    url.searchParams.set('page',String(page))
+
+    window.history.pushState({},"",url)
+    setPage(page)
+
+  }
+
   function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
-    setSearch(event.target.value);
-    setPage(1)
+    setCurrentSearch(event.target.value);
+    setCurrentPage(1)
 
 
   }
   function goToFisrtPage() {
-    // setPage(1)
+        // setCurrentPage(totalPages)
+        setCurrentPage(totalPages)
 
   }
   function goToLastPage() {
-    // setPage(totalPages)
+    setCurrentPage(totalPages)
+
+  }
+ 
+  function goToPreviustPage() {
+    setCurrentPage(page-1)
 
   }
   function goToNextPage() {
-
-
-    // setPage(page + 1)
-    const url = new URL(window.location.toString())
-    url.searchParams.set('page',String(page+1))
-    window.history.pushState({},"",url)
-
-  }
-  function goToPreviustPage() {
-
-    // setPage(page - 1)
-
-  }
-
+    setCurrentPage(page+1)
+}
 
 
   return (
@@ -88,7 +119,7 @@ export function AttendeeList() {
         <div className="px-3 w-72 py-1.5 border border-white/10  rounded-lg text-sm flex items-center gap-3">
           <Search className="size-4 text-emerald-300" />
 
-          <input onChange={onSearchInputChanged} placeholder="Buscar Participante" className="focus:ring-0 bg-transparent flex-1  border-none p-0 " />
+          <input onChange={onSearchInputChanged} value ={search} placeholder="Buscar Participante" className="focus:ring-0 bg-transparent flex-1  border-none p-0 " />
 
         </div>
        
@@ -165,7 +196,7 @@ export function AttendeeList() {
               <div className=" inline-flex items-center gap-8">
                 <span>Página {page} de {totalPages}</span>
 
-                <div className=" flex flex gap-1.5 ">
+                <div className=" flex gap-1.5 ">
                   <IconButton onClick={goToFisrtPage} disabled={page == 1}>
                     <ChevronsLeft className="size-4" />
                   </IconButton>
